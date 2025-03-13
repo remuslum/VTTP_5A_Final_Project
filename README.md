@@ -10,12 +10,12 @@ Headers :
 ```json
 Body :
 {
-  name : "Clothes",
-  date : "2025-02-01,
-  amount : "20.50",
-  category : "Needs",
-  description : "Bought T-Shirts from Uniqlo",
-  email : "remus@abc.com"
+  "name" : "Clothes",
+  "date" : "2025-02-01,
+  "amount" : "20.50",
+  "category" : "Needs",
+  "description" : "Bought T-Shirts from Uniqlo",
+  "email" : "remus@abc.com"
 }
 ```
 
