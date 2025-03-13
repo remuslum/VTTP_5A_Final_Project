@@ -25,7 +25,7 @@ CREATE TABLE expenses (
     name CHAR(32) NOT NULL,
     date DATE NOT NULL,
     amount FLOAT(6,2) NOT NULL,
-    cateogry CHAR(32) NOT NULL,
+    category CHAR(32) NOT NULL,
     description TEXT NOT NULL,
     email VARCHAR(32) NOT NULL,
 
