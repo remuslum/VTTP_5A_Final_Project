@@ -6,9 +6,9 @@ POST /api/insert/expenses
 Headers : 
   Content-Type:"application/json"
   Authorization: Bearer <token>
-Body :
 ```
 ```json
+Body :
 {
   name : "Clothes",
   date : "2025-02-01,
