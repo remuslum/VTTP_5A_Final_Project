@@ -2,10 +2,12 @@
 ## Backend (Java Spring) Endpoints
 
 POST /api/insert/expenses
+```
 Headers : 
   Content-Type:"application/json"
   Authorization: Bearer <token>
-Body : 
+Body :
+```
 ```json
 {
   name : "Clothes",
