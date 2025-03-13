@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import sg.nus.edu.iss.vttp_5a_final_project.service.LoanService;
+import sg.nus.edu.iss.vttp_5a_final_project.service.LoanCalculatorService;
 
 @RestController
 public class LoanPaymentController {
     
     @Autowired
-    private LoanService loanService;
+    private LoanCalculatorService loanService;
 
     @PostMapping(path="/api/loan/amount", produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getLoanAmount(@RequestParam int loanAmount, @RequestParam double annualInterest, 

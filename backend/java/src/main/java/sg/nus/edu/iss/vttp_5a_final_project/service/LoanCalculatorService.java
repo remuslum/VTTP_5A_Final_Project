@@ -7,15 +7,15 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sg.nus.edu.iss.vttp_5a_final_project.repository.LoanRepository;
+import sg.nus.edu.iss.vttp_5a_final_project.repository.LoanCalculatorRepository;
 
 @Service
-public class LoanService {
+public class LoanCalculatorService {
 
     private final int NUMBER_OF_MONTHS_IN_A_QUARTER=3;
     
     @Autowired
-    private LoanRepository loanRepository;
+    private LoanCalculatorRepository loanRepository;
 
     public String getLoanAmount(int loanAmount, double annualInterest, int duration, String paymentType){
         double payment = 0.00;

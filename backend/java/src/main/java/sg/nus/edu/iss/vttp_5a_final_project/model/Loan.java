@@ -1,59 +1,56 @@
 package sg.nus.edu.iss.vttp_5a_final_project.model;
 
+import java.util.UUID;
+
+import jakarta.json.JsonObject;
+
 public class Loan {
-    private int loanAmount;
-    private double annualInterest;
+    // JSON fields
+    private static final String AMOUNT="amount";
+    private static final String DESCRIPTION="description";
+    private static final String EMAIL="email";
 
-    public Loan(int loanAmount, double annualInterest) {
-        this.loanAmount = loanAmount;
-        this.annualInterest = annualInterest;
+    private String id;
+    private double amount;
+    private String description;
+    private String email;
+
+    public Loan() {
+        this.id = UUID.randomUUID().toString().substring(0, 8);
     }
-    public int getLoanAmount() {
-        return loanAmount;
+    
+    public String getId() {
+        return id;
     }
-    public void setLoanAmount(int loanAmount) {
-        this.loanAmount = loanAmount;
+    public void setId(String id) {
+        this.id = id;
     }
-    public double getAnnualInterest() {
-        return annualInterest;
+    public double getAmount() {
+        return amount;
     }
-    public void setAnnualInterest(double annualInterest) {
-        this.annualInterest = annualInterest;
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public double calculateLoanPayment(int duration, int frequencyOfPayment){
-        double paymentPerInterest = this.annualInterest/frequencyOfPayment;
-        int numOfPayments = duration * frequencyOfPayment;
+    public static Loan convertJSONToLoan(JsonObject object){
+        Loan loan = new Loan();
+        loan.setAmount(object.getJsonNumber(AMOUNT).doubleValue());
+        loan.setDescription(object.getString(DESCRIPTION));
+        loan.setEmail(object.getString(EMAIL));
 
-        /* Formula: 
-        *                     ((principal) * (monthly interest) * (1 + monthly interest)**n)
-        *         amount =    --------------------------------------------------------------
-        *                                    (1 + monthly interest)**n - 1 
-        */
-        
-        double compoundedInterest = Math.pow((1 + paymentPerInterest),numOfPayments);
-        double numerator = loanAmount * paymentPerInterest * compoundedInterest;
-        double denominator = compoundedInterest - 1;
-
-        return numerator/denominator;
+        return loan;
     }
-
-    public long calcuateNumberOfPayments(double paymentPerPeriod, int frequencyOfPayment){
-        /* Formula: 
-         *              log(paymentPerPeriod/(paymentPerPeriod - (principal * monthly interest)))
-         *  duration =  -------------------------------------------------------------------------
-         *                                   log(1 + monthly interest)
-         */
-
-        
-        double interestPerPayment = this.annualInterest/frequencyOfPayment;
-        
-        // Calculation of numerator
-        double numerator = Math.log(paymentPerPeriod / (paymentPerPeriod - (loanAmount * interestPerPayment)));
-        
-        // Calculation of denominator
-        double denominator = Math.log(1 + interestPerPayment);
-
-        return Math.round(numerator/denominator);
-    }
+    
 }
