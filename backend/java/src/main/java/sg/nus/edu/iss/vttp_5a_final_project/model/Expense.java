@@ -1,7 +1,6 @@
 package sg.nus.edu.iss.vttp_5a_final_project.model;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 import jakarta.json.JsonObject;
 
@@ -72,16 +71,4 @@ public class Expense {
         return expense;
     }
 
-    public static boolean checkValidExpenseRecord(Map<String, String> records){
-        boolean isNameValid = !records.get(NAME).isBlank();
-        boolean isDateValid = !records.get(DATE).isBlank() && 
-        (LocalDate.parse(records.get(DATE)).isBefore(LocalDate.now()));
-        boolean isAmountValid = !records.get(AMOUNT).isBlank() && (Double.parseDouble(records.get(AMOUNT)) > 0);
-        boolean isCategoryValid = !records.get(CATEGORY).isBlank();
-        boolean isDescriptionValid = !records.get(DESCRIPTION).isBlank();
-        boolean isEmailValid = !records.get(EMAIL).isBlank();
-
-        return isNameValid && isDateValid && isAmountValid && isCategoryValid && isDescriptionValid && isEmailValid;
-    }
-    
 }
