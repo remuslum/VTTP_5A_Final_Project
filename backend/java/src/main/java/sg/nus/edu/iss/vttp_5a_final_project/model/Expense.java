@@ -7,12 +7,12 @@ import jakarta.json.JsonObject;
 public class Expense {
 
     // JSON key fields
-    private static final String NAME="name";
-    private static final String DATE="date";
-    private static final String AMOUNT="amount";
-    private static final String CATEGORY="category";
-    private static final String DESCRIPTION="description";
-    private static final String EMAIL="email";
+    public static final String NAME="name";
+    public static final String DATE="date";
+    public static final String AMOUNT="amount";
+    public static final String CATEGORY="category";
+    public static final String DESCRIPTION="description";
+    public static final String EMAIL="email";
 
     private String name;
     private LocalDate date;

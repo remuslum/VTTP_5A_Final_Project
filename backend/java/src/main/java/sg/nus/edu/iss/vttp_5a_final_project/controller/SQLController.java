@@ -70,7 +70,6 @@ public class SQLController {
                 return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(404));
             }
         } catch (DataAccessException e) {
-            e.printStackTrace();
             d.append("message", "Unsuccessful update, SQL Server is not running");
             return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(500));
         }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -45,6 +46,7 @@ public class SQLService {
         return sqlRepository.insertLoans(loans);
     }
 
+    @Transactional
     public boolean insertLoanPayments(String payload){
         JsonArray arrayOfLoans = Json.createReader(new StringReader(payload)).readArray();
         List<LoanPayment> loanPayments = new ArrayList<>();
@@ -54,6 +56,6 @@ public class SQLService {
             loanPayments.add(LoanPayment.convertJSONToLoanPayment(object));
         }
 
-        return sqlRepository.insertLoanPayments(loanPayments);
+        return sqlRepository.insertLoanPayments(loanPayments) && sqlRepository.updateLoan(loanPayments);
     }
 }

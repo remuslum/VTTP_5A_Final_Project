@@ -32,6 +32,18 @@ public class SQLRepository {
         INSERT INTO loan_payments (amount, date, loan_id) VALUES (?, ?, ?);        
     """;
 
+    private final String UPDATE_LOAN_PAYMENT =
+    """
+        UPDATE loans SET amount = ? WHERE id = ?;        
+    """;
+
+    private final String SELECT_LOAN =
+    """
+        SELECT amount FROM loans WHERE id = ?;        
+    """;
+
+    private final String AMOUNT_COLUMN_LOANS="amount";
+
     public boolean insertExpenses(List<Expense> expenses){
         List<Object[]> params = expenses.stream().map(e -> new Object[]{e.getName(),e.getDate(),e.getAmount(),
             e.getCategory(),e.getDescription(),e.getEmail()}).collect(Collectors.toList());
@@ -54,5 +66,16 @@ public class SQLRepository {
         int added[] = jdbcTemplate.batchUpdate(INSERT_LOAN_PAYMENT,params);
 
         return added.length == params.size();
+    }
+
+    public boolean updateLoan(List<LoanPayment> loanPayments){
+        String loanId = loanPayments.get(0).getLoanId();
+        int loanAmount = jdbcTemplate.queryForRowSet(SELECT_LOAN, loanId).getInt(AMOUNT_COLUMN_LOANS);
+
+        for(LoanPayment l:loanPayments){
+            loanAmount -= l.getAmount();
+        } 
+
+        return jdbcTemplate.update(UPDATE_LOAN_PAYMENT, loanAmount,loanId) > 0;
     }
 }
