@@ -36,6 +36,16 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
         amount(up to 8 digits with 2 decimal places):<amount>, category:<category>, description:<description>, email:<email>      
     """;
 
+    private final String RECORD_ADDED = 
+    """
+        Record successfully added        
+    """;
+
+    private final String INVALID_RECORD = 
+    """
+        Invalid record, please try again        
+    """;
+
     public FinanceTelegramBot(@Value("${telegram.bot.username}")String botUsername,
     @Value("${telegram.bot.token}")String botToken){
         super(botToken);
@@ -48,6 +58,7 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
         return botUsername;
     }
 
+
     @Override
     public void onUpdateReceived(Update update) {
         // Check if the update contains a message and has text
@@ -58,20 +69,30 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
 
             // Process add expense
             if (userExpenseState.getOrDefault(chatId, false)){
-
+                try {
+                    if(isValidExpense(text)){
+                        // save to database
+                        sendTextMessage(chatId, RECORD_ADDED);
+                    } else {
+                        sendTextMessage(chatId, INVALID_RECORD);
+                    }
+                } catch (InvalidAmountOfArgumentsException ie){
+                    sendTextMessage(chatId, ie.getMessage());
+                }
+                userExpenseState.put(chatId, false);
             }
 
             // Process commands manually
             if (text.equalsIgnoreCase("/start")) {
-                sendTextMessage(chatId, "Welcome to the bot! Type /help for available.");
+                sendTextMessage(chatId, WELCOME_MESSAGE);
             } else if (text.equalsIgnoreCase("/help")) {
                 sendTextMessage(chatId, "Available commands:\n/start - Start the bot\n/help - Show commands");
             } else if (text.equalsIgnoreCase("/test")){
                 sendTextMessage(chatId, "testing");
             } else if (text.equalsIgnoreCase("/addexpense")){
                 userExpenseState.put(chatId, true);
-            }
-            else {
+                sendTextMessage(chatId, ADD_EXPENSE_MESSAGE);
+            } else {
                 sendTextMessage(chatId, "Unknown command. Type /help to see available commands.");
             }
         }

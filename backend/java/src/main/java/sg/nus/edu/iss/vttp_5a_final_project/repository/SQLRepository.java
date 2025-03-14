@@ -42,6 +42,11 @@ public class SQLRepository {
         SELECT amount FROM loans WHERE id = ?;        
     """;
 
+    private final String SELECT_EMAIL =
+    """
+        SELECT COUNT(*) as count FROM users WHERE email = ?;        
+    """;
+
     private final String AMOUNT_COLUMN_LOANS="amount";
 
     public boolean insertExpenses(List<Expense> expenses){
@@ -78,4 +83,10 @@ public class SQLRepository {
 
         return jdbcTemplate.update(UPDATE_LOAN_PAYMENT, loanAmount,loanId) > 0;
     }
+
+    public boolean checkValidEmail(String email){
+        return jdbcTemplate.queryForRowSet(SELECT_EMAIL,email).getInt("count") > 0;
+    }
+
+    
 }
