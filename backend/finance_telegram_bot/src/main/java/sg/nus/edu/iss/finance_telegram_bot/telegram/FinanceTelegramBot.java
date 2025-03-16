@@ -2,20 +2,24 @@ package sg.nus.edu.iss.finance_telegram_bot.telegram;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import sg.nus.edu.iss.finance_telegram_bot.models.ExpenseValidator;
 import sg.nus.edu.iss.finance_telegram_bot.models.exception.InvalidAmountOfArgumentsException;
+import sg.nus.edu.iss.finance_telegram_bot.models.exception.InvalidFieldValueException;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_EXPENSE_MESSAGE;
-import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.INVALID_RECORD;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_ENOUGH_ARGUMENTS;
-import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.RECORD_ADDED;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.TOO_MANY_ARGUMENTS;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_MESSAGE;
 
@@ -24,19 +28,15 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
     private final String botUsername;
     private final Map<String, Boolean> userExpenseState = new HashMap<>();
     
-    //Fields
-    private final String NAME="name";
-    private final String DATE="date";
-    private final String AMOUNT="amount";
-    private final String CATEGORY="category";
-    private final String DESCRIPTION="description";
-    private final String EMAIL="email";
+    
+
+    @Autowired
+    private ExpenseValidator expenseValidator;
 
     public FinanceTelegramBot(@Value("${telegram.bot.username}")String botUsername,
     @Value("${telegram.bot.token}")String botToken){
         super(botToken);
         this.botUsername = botUsername;
-
     }
 
     @Override
@@ -55,14 +55,12 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
 
             // Process add expense
             if (userExpenseState.getOrDefault(chatId, false)){
+                Map<String, String> fields = convertFieldsToMap(text);
                 try {
-                    if(areAllFieldsPresent(text)){
-                        // save to database
-                        sendTextMessage(chatId, RECORD_ADDED);
-                    } else {
-                        sendTextMessage(chatId, INVALID_RECORD);
+                    if(areAllFieldsPresent(fields) && processExpense(fields)){
+                        sendPayload(fields);
                     }
-                } catch (InvalidAmountOfArgumentsException ie){
+                } catch (InvalidAmountOfArgumentsException | InvalidFieldValueException ie){
                     sendTextMessage(chatId, ie.getMessage());
                 }
                 userExpenseState.put(chatId, false);
@@ -96,20 +94,18 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
         }
     }
 
-    private boolean areAllFieldsPresent(String message){
-        String[] expense = message.split(",");
-        if(expense.length < 6){
-            throw new InvalidAmountOfArgumentsException(NOT_ENOUGH_ARGUMENTS);
-        } else if (expense.length > 6){
-            throw new InvalidAmountOfArgumentsException(TOO_MANY_ARGUMENTS);
-        } else {
-            Map<String, String> fields = new HashMap<>();
-            for(String ex : expense){
-                String[] temp = ex.split(":");
-                fields.put(temp[0],temp[1]);
-            }
-            return fields.containsKey(NAME) && fields.containsKey(DATE) && fields.containsKey(AMOUNT) && 
-            fields.containsKey(CATEGORY) && fields.containsKey(DESCRIPTION) && fields.containsKey(EMAIL);
-        }
+    
+    private Map<String, String> convertFieldsToMap(String message){
+        String[] expenseFields = message.split("\n");
+        Map<String, String> fields = new HashMap<>();
+        for(String ex : expenseFields){
+            String[] temp = ex.split(":");
+            fields.put(temp[0],temp[1]);
+        } 
+        return fields;
     }
+
+
+
+    
 }

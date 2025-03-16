@@ -9,8 +9,12 @@ public class Messages {
 
     public static final String ADD_EXPENSE_MESSAGE =
     """
-        Please add expense in the format name:<name>, date(separate with dashes or slashes):<date>,
-        amount(up to 8 digits with 2 decimal places):<amount>, category:<category>, description:<description>, email:<email>      
+        Please add expense in the format and separate each field in a new line \n
+        name:<name> \n 
+        date(separate with dashes or slashes):<date> \n
+        amount(up to 8 digits with 2 decimal places):<amount> \n
+        category:<category> \n
+        description:<description> \n
     """;
 
     public static final String RECORD_ADDED = 
