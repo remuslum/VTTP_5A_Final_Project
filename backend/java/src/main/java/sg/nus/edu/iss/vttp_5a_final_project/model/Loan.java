@@ -1,5 +1,7 @@
 package sg.nus.edu.iss.vttp_5a_final_project.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 import jakarta.json.JsonObject;
@@ -9,6 +11,7 @@ public class Loan {
     private static final String AMOUNT="amount";
     private static final String DESCRIPTION="description";
     private static final String EMAIL="email";
+    private static final String ID="id";
 
     private String id;
     private double amount;
@@ -49,6 +52,15 @@ public class Loan {
         loan.setAmount(object.getJsonNumber(AMOUNT).doubleValue());
         loan.setDescription(object.getString(DESCRIPTION));
         loan.setEmail(object.getString(EMAIL));
+
+        return loan;
+    }
+
+    public static Loan convertResultSetToLoan(ResultSet rs) throws SQLException{
+        Loan loan = new Loan();
+        loan.setId(rs.getString(ID));
+        loan.setAmount(rs.getDouble(AMOUNT));
+        loan.setDescription(rs.getString(DESCRIPTION));
 
         return loan;
     }

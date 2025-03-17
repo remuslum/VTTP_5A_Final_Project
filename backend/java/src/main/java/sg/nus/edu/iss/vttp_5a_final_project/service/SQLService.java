@@ -3,6 +3,7 @@ package sg.nus.edu.iss.vttp_5a_final_project.service;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import sg.nus.edu.iss.vttp_5a_final_project.model.Expense;
 import sg.nus.edu.iss.vttp_5a_final_project.model.Loan;
@@ -55,7 +57,28 @@ public class SQLService {
             JsonObject object = arrayOfLoans.getJsonObject(i);
             loanPayments.add(LoanPayment.convertJSONToLoanPayment(object));
         }
-
+        
         return sqlRepository.insertLoanPayments(loanPayments) && sqlRepository.updateLoan(loanPayments);
+    }
+
+    public JsonArray getAllLoans(String email){
+        List<Loan> loansList = sqlRepository.getAllLoans(email);
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        loansList.forEach(loan -> {
+            JsonObject object = Json.createObjectBuilder().add("id",loan.getId()).add("amount",loan.getAmount()).add("description",loan.getDescription()).build();
+            arrayBuilder.add(object);
+        });
+        return arrayBuilder.build();
+    }
+
+    public boolean checkValidEmail(String email){
+        Optional<Integer> emailCount = sqlRepository.checkValidEmail(email);
+        return emailCount.isPresent();
+    }
+
+    public boolean checkValidLoanId(String loanId){
+        Optional<Integer> loanCount = sqlRepository.checkValidLoanId(loanId);
+        return loanCount.isPresent();
     }
 }

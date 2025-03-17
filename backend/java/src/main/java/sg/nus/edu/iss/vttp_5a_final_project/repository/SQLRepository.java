@@ -1,6 +1,7 @@
 package sg.nus.edu.iss.vttp_5a_final_project.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class SQLRepository {
     """
         SELECT COUNT(*) as count FROM users WHERE email = ?;        
     """;
+    private final String GET_LOANS =
+    """
+        SELECT id,amount,description FROM loans WHERE email = ?;         
+    """;
+    private final String GET_LOAN =
+    """
+        SELECT COUNT(*) from loans WHERE id = ?;        
+    """;
 
     private final String AMOUNT_COLUMN_LOANS="amount";
 
@@ -75,17 +84,31 @@ public class SQLRepository {
 
     public boolean updateLoan(List<LoanPayment> loanPayments){
         String loanId = loanPayments.get(0).getLoanId();
-        int loanAmount = jdbcTemplate.queryForRowSet(SELECT_LOAN, loanId).getInt(AMOUNT_COLUMN_LOANS);
+        Optional<Integer> loanAmount = Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_LOAN, Integer.class, loanId));
+        loanAmount.map(loan -> {
+            for(LoanPayment l:loanPayments){
+                loan -= (int) l.getAmount();
+            } 
 
-        for(LoanPayment l:loanPayments){
-            loanAmount -= l.getAmount();
-        } 
-
-        return jdbcTemplate.update(UPDATE_LOAN_PAYMENT, loanAmount,loanId) > 0;
+            return jdbcTemplate.update(UPDATE_LOAN_PAYMENT, loan,loanId) > 0;
+        }).orElseGet(() -> {
+            return false;
+        });
+        return true;
     }
 
-    public boolean checkValidEmail(String email){
-        return jdbcTemplate.queryForRowSet(SELECT_EMAIL,email).getInt("count") > 0;
+    public Optional<Integer> checkValidEmail(String email){
+        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_EMAIL, Integer.class,email));
+    }
+
+    public Optional<Integer> checkValidLoanId(String loanId){
+        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_LOAN, Integer.class,loanId));
+    }
+
+    public List<Loan> getAllLoans(String email){
+        return jdbcTemplate.query(GET_LOANS,(rs, rowNum) -> {
+            return Loan.convertResultSetToLoan(rs);
+        }, email);
     }
 
     
