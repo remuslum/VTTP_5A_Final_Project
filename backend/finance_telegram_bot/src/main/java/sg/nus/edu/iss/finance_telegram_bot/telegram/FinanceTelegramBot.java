@@ -2,48 +2,51 @@ package sg.nus.edu.iss.finance_telegram_bot.telegram;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import sg.nus.edu.iss.finance_telegram_bot.models.ExpenseValidator;
-import sg.nus.edu.iss.finance_telegram_bot.models.exception.InvalidAmountOfArgumentsException;
-import sg.nus.edu.iss.finance_telegram_bot.models.exception.InvalidFieldValueException;
+import sg.nus.edu.iss.finance_telegram_bot.service.FinanceTelegramService;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_EXPENSE_MESSAGE;
-import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_ENOUGH_ARGUMENTS;
-import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.TOO_MANY_ARGUMENTS;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_LOAN_PAYMENT_MESSAGE;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ALREADY_REGISTERED;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_REGISTERD;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_MESSAGE;
 
 @Component
 public class FinanceTelegramBot extends TelegramLongPollingBot{
+
+    private final ExpenseValidator expenseValidator;
     private final String botUsername;
     private final Map<String, Boolean> userExpenseState = new HashMap<>();
-    
-    
+    private final Map<String, Boolean> userLoanPaymentState = new HashMap<>();
+    private final Map<String, Boolean> userCheckEmailState = new HashMap<>();
+    private String userEmail = "";
+    private boolean isUserRegistered = false;
 
     @Autowired
-    private ExpenseValidator expenseValidator;
+    private FinanceTelegramService telegramService;
 
     public FinanceTelegramBot(@Value("${telegram.bot.username}")String botUsername,
-    @Value("${telegram.bot.token}")String botToken){
+    @Value("${telegram.bot.token}")String botToken, ExpenseValidator expenseValidator){
         super(botToken);
         this.botUsername = botUsername;
+        this.expenseValidator = expenseValidator;
     }
 
     @Override
     public String getBotUsername() {
         return botUsername;
     }
-
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -55,27 +58,62 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
 
             // Process add expense
             if (userExpenseState.getOrDefault(chatId, false)){
-                Map<String, String> fields = convertFieldsToMap(text);
-                try {
-                    if(areAllFieldsPresent(fields) && processExpense(fields)){
-                        sendPayload(fields);
-                    }
-                } catch (InvalidAmountOfArgumentsException | InvalidFieldValueException ie){
-                    sendTextMessage(chatId, ie.getMessage());
-                }
+                Map<String, String> expenseFields = convertFieldsToMap(text);
+                // Add email to the expense fields
+                expenseFields.put("email",userEmail);
+                sendTextMessage(chatId, telegramService.sendExpense(expenseFields));
                 userExpenseState.put(chatId, false);
+
+            } else if (userLoanPaymentState.getOrDefault(chatId, false)){
+                Map<String, String> loanPaymentFields = convertFieldsToMap(text);
+                sendTextMessage(chatId, telegramService.sendLoanPayment(loanPaymentFields));
+                userLoanPaymentState.put(chatId, false);
+
+                // Verify if the user has a registered email
+            } else if (userCheckEmailState.getOrDefault(chatId, false)){
+                ResponseEntity<String> response = telegramService.checkEmail(text);
+
+                if(response.getStatusCode().equals(HttpStatusCode.valueOf(200))){
+                    userEmail = text;
+                    isUserRegistered = !isUserRegistered;
+                    userCheckEmailState.put(chatId, false);
+                } 
+                sendTextMessage(chatId, response.getBody());
+
             } else {
                 // Process commands manually
                 if (text.equalsIgnoreCase("/start")) {
-                    sendTextMessage(chatId, WELCOME_MESSAGE);
+                    if(userEmail.isBlank()){
+                        sendTextMessage(chatId, WELCOME_MESSAGE);
+                        userCheckEmailState.put(chatId, true);
+                    } else {
+                        sendTextMessage(chatId, ALREADY_REGISTERED);
+                    }
+                    
                 } else if (text.equalsIgnoreCase("/help")) {
                     sendTextMessage(chatId, "Available commands:\n/start - Start the bot\n/help - Show commands");
-                } else if (text.equalsIgnoreCase("/test")){
-                    sendTextMessage(chatId, "testing");
+                } else if (text.equalsIgnoreCase("/addloanpayment")){
+                    if(isUserRegistered){
+                        userLoanPaymentState.put(chatId, true);
+                        sendTextMessage(chatId, ADD_LOAN_PAYMENT_MESSAGE);
+                    } else {
+                        sendTextMessage(chatId, NOT_REGISTERD);
+                    }
                 } else if (text.equalsIgnoreCase("/addexpense")){
-                    userExpenseState.put(chatId, true);
-                    sendTextMessage(chatId, ADD_EXPENSE_MESSAGE);
-                } else {
+                    if(isUserRegistered){
+                        userExpenseState.put(chatId, true);
+                        sendTextMessage(chatId, ADD_EXPENSE_MESSAGE);
+                    } else {
+                        sendTextMessage(chatId, NOT_REGISTERD);
+                    }
+                } else if (text.equalsIgnoreCase("/listloans")){
+                    if(isUserRegistered){
+                        sendTextMessage(chatId, telegramService.getAllLoans(userEmail));
+                    } else {
+                        sendTextMessage(chatId,NOT_REGISTERD);
+                    }
+                }
+                else {
                     sendTextMessage(chatId, "Unknown command. Type /help to see available commands.");
                 }
             }
@@ -96,12 +134,12 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
 
     
     private Map<String, String> convertFieldsToMap(String message){
-        String[] expenseFields = message.split("\n");
+        String[] expenseFields = message.split(",");
         Map<String, String> fields = new HashMap<>();
         for(String ex : expenseFields){
             String[] temp = ex.split(":");
-            fields.put(temp[0],temp[1]);
-        } 
+            fields.put(temp[0].trim(),temp[1].trim());
+        }
         return fields;
     }
 

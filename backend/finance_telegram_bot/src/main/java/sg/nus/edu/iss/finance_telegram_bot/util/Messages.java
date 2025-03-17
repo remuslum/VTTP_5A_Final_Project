@@ -4,17 +4,26 @@ public class Messages {
     // Messages
     public static final String WELCOME_MESSAGE =
     """
-        Welcome to financehub bot! Type /help for available commands.
+        Welcome to financehub bot!
+        Please enter your registered email.
     """;
 
     public static final String ADD_EXPENSE_MESSAGE =
     """
-        Please add expense in the format and separate each field in a new line \n
-        name:<name> \n 
-        date(separate with dashes or slashes):<date> \n
-        amount(up to 8 digits with 2 decimal places):<amount> \n
-        category:<category> \n
-        description:<description> \n
+        Please add expense in the following format and separate each field in a new line \n
+        name:<name>,
+        date(separate with dashes or slashes):<date>,
+        amount(up to 8 digits with 2 decimal places):<amount>,
+        category:<category>,
+        description:<description>
+    """;
+
+    public static final String ADD_LOAN_PAYMENT_MESSAGE =
+    """
+        Please add loan payment in the following format and separate each field in a new line:
+        amount: <amount>,
+        date: <date>,
+        loanId: <loanId>
     """;
 
     public static final String RECORD_ADDED = 
@@ -33,5 +42,15 @@ public class Messages {
     public static final String TOO_MANY_ARGUMENTS = 
     """
         You have too many fields present        
+    """;
+
+    public static final String NOT_REGISTERD = 
+    """
+        You seem to not have a registered email with us. Please enter /start and follow the steps to see if your email is registered.        
+    """;
+
+    public static final String ALREADY_REGISTERED =
+    """
+        You have already verified your email.        
     """;
 }
