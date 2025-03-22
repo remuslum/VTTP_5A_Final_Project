@@ -67,6 +67,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.config.js"
+          },
           "configurations": {
             "production": {
               "buildTarget": "vttp_5a_final_project:build:production"
