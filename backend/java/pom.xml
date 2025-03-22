@@ -68,16 +68,15 @@
 			<artifactId>jakarta.json</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-		<!-- TelegramBots Library -->
 		<dependency>
-			<groupId>org.telegram</groupId>
-			<artifactId>telegrambots-spring-boot-starter</artifactId>
-			<version>6.8.0</version>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.4.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.telegram</groupId>
-			<artifactId>telegrambots</artifactId>
-			<version>6.9.0</version> <!-- Check for the latest version -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.1.2-jre</version> 
 		</dependency>
 	</dependencies>
 
