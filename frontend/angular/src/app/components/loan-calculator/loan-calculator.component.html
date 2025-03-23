@@ -1,0 +1,24 @@
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-50">
+        <p class="fs-1">Select Monthly Payment/Duration: </p>
+      <div class="col-12 d-flex justify-content-start">
+        <div class="row">
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <button ngbNavLink>Monthly Payment</button>
+                    <ng-template ngbNavContent>
+                        <app-monthly></app-monthly>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <button ngbNavLink>Duration</button>
+                    <ng-template ngbNavContent>
+                        <app-duration></app-duration>
+                    </ng-template>
+                </li>
+            </ul>
+        </div>
+      </div>
+      <div class="row" [ngbNavOutlet]="nav"></div>
+    </div>
+  </div>

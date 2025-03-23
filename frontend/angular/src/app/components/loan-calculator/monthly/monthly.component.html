@@ -1,0 +1,36 @@
+<div class="container-fluid shadow rounded border-top">
+    <div class="row text-center">
+        <p class="fs-1">
+            Calculate Monthly Payment
+        </p>
+    </div>
+    <form [formGroup]="form">
+        <div class="row">
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amount" formControlName="amount">
+            </div>
+            <div class="mb-3">
+                <label for="interestRate" class="form-label">Interest Rate</label>
+                <input type="number" class="form-control" id="interestRate" formControlName="interestRate">
+            </div>
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration</label>
+                <input type="number" class="form-control" id="duration" formControlName="duration">
+            </div>
+            <div class="mb-3">
+                <label for="frequency" class="form-label">Frequency</label>
+                <select id="frequency" class="form-select" formControlName="frequency">
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="annually">Yearly</option>
+                </select>
+            </div>
+        </div>
+        <div class="row text-end">
+            <div class="col mb-3">
+                <button class="btn btn-secondary">Submit</button>
+            </div>
+        </div>   
+    </form>
+</div>

@@ -13,13 +13,13 @@
     </div>
     <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
         <li [ngbNavItem]="1">
-            <button ngbNavLink>Add Expense</button>
+            <button ngbNavLink>Expense</button>
             <ng-template ngbNavContent>
                 <app-add-expense></app-add-expense>
             </ng-template>
         </li>
         <li [ngbNavItem]="2">
-            <button ngbNavLink>Add Loan Payment</button>
+            <button ngbNavLink>Loan Payment</button>
             <ng-template ngbNavContent>
                 <app-addloanpayment></app-addloanpayment>
             </ng-template>

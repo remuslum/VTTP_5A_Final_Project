@@ -17,7 +17,10 @@ import { AddExpenseComponent } from './components/add-expense/add-expense.compon
 import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
 import { ExpenselistComponent } from './components/expenselist/expenselist.component';
 import { AddloanpaymentComponent } from './components/addloanpayment/addloanpayment.component';
-import { AddItemsComponent } from './components/add-items/add-items.component'
+import { AddItemsComponent } from './components/add-items/add-items.component';
+import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
+import { MonthlyComponent } from './components/loan-calculator/monthly/monthly.component';
+import { DurationComponent } from './components/loan-calculator/duration/duration.component'
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { AddItemsComponent } from './components/add-items/add-items.component'
     ExpensedashboardComponent,
     ExpenselistComponent,
     AddloanpaymentComponent,
-    AddItemsComponent
+    AddItemsComponent,
+    LoanCalculatorComponent,
+    MonthlyComponent,
+    DurationComponent
   ],
   imports: [
     BrowserModule,

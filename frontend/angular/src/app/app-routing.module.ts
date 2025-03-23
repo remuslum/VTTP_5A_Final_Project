@@ -7,6 +7,7 @@ import { AddExpenseComponent } from './components/add-expense/add-expense.compon
 import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
 import { AddloanpaymentComponent } from './components/addloanpayment/addloanpayment.component';
 import { AddItemsComponent } from './components/add-items/add-items.component';
+import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
 
 const routes: Routes = [
   {path:"",component:LoginComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path:"expenses/addexpense",component:AddExpenseComponent},
   {path:"expenses/dashboard",component:ExpensedashboardComponent},
   {path:"loan/addloanpayment",component:AddloanpaymentComponent},
-  {path:"add",component:AddItemsComponent}
+  {path:"add",component:AddItemsComponent},
+  {path:"calculator",component:LoanCalculatorComponent}
 ];
 
 @NgModule({
