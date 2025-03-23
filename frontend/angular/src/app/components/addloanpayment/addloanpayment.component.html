@@ -1,0 +1,68 @@
+<div class="container-fluid">
+    <div class="row text-center">
+        <p class="fs-1 fw-semibold">Add Loan Payment</p>
+    </div>
+    <div class="row">
+        <div class="col col-6">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col col-1">
+            <button class="btn btn-outline-secondary rounded" placement="top" ngbTooltip="Add expense" (click)="addPayment()">
+                <i class="bi bi-plus-circle fs-6"></i>
+            </button>
+        </div>
+    </div>
+    <form [formGroup]="form" (submit)="submitForm()">
+        @if(payments.controls.length > 0){
+            <div class="row">
+                <p class="fs-4 fw-medium">New Loan Payment</p>
+            </div>
+            <div class="row" formArrayName="paymentsList">
+                @for(payment of payments.controls;let idx = $index; track idx){
+                    <div class="row border-bottom text-center" [formGroupName]="idx">
+                        <div class="col-1">
+                            <p class="fs-4">
+                                {{idx + 1}}
+                            </p>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-floating m-2">
+                                <input type="text" class="form-control" id="floatingAmount{{idx}}" formControlName="amount" 
+                                [class.is-invalid]="payment.get('amount')?.invalid && payment.get('amount')?.touched">
+                                <label for="floatingAmount{{idx}}">Amount</label>
+                                @if(payment.get('amount')?.invalid && payment.get('amount')?.touched){
+                                    <p class="text-danger">Invalid Amount!</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-floating m-2">
+                                <input type="date" class="form-control" id="floatingDate{{idx}}" formControlName="date" 
+                                [class.is-invalid]="payment.get('date')?.invalid && payment.get('date')?.touched">
+                                <label for="floatingDate{{idx}}">Date</label>
+                                @if(payment.get('date')?.invalid && payment.get('date')?.touched){
+                                    <p class="text-danger">Invalid Date!</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row text-center mt-3">
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit">
+                            Save
+                            <i class="bi bi-save ms-3"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        }
+        @else {
+            <div class="row text-center">
+                <p class="fs-2 fw-lighter fst-italic">Press the + button above to add a loan payment</p>
+            </div>
+        }
+    </form>
+</div>

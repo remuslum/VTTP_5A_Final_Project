@@ -12,10 +12,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from "./enviroments/environment";
 import { SyncgridComponent } from './components/syncgrid/syncgrid.component';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddExpenseComponent } from './components/add-expense/add-expense.component';
 import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
-import { ExpenselistComponent } from './components/expenselist/expenselist.component'
+import { ExpenselistComponent } from './components/expenselist/expenselist.component';
+import { AddloanpaymentComponent } from './components/addloanpayment/addloanpayment.component';
+import { AddItemsComponent } from './components/add-items/add-items.component'
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ExpenselistComponent } from './components/expenselist/expenselist.compo
     SyncgridComponent,
     AddExpenseComponent,
     ExpensedashboardComponent,
-    ExpenselistComponent
+    ExpenselistComponent,
+    AddloanpaymentComponent,
+    AddItemsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,9 @@ import { ExpenselistComponent } from './components/expenselist/expenselist.compo
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     GridAllModule,
-    NgbModule
+    NgbModule,
+    NgbTooltipModule,
+    NgbNavModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

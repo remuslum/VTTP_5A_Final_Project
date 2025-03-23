@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row text-start">
+        <p class="fs-4">
+            <a class="link-secondary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" [routerLink]="'/home'">
+                <i class="bi bi-arrow-left-short me-2"></i>Back
+            </a>
+        </p>
+    </div>
+    <div class="row text-center">
+        <p class="fs-1">
+            Add an expense/loan payment
+        </p>
+    </div>
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+        <li [ngbNavItem]="1">
+            <button ngbNavLink>Add Expense</button>
+            <ng-template ngbNavContent>
+                <app-add-expense></app-add-expense>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+            <button ngbNavLink>Add Loan Payment</button>
+            <ng-template ngbNavContent>
+                <app-addloanpayment></app-addloanpayment>
+            </ng-template>
+        </li>
+    </ul>
+    <div class="container" [ngbNavOutlet]="nav">
+
+    </div>
+</div>

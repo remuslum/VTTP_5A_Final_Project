@@ -5,13 +5,17 @@ import { HomeComponent } from './components/home/home.component';
 import { ExpenselistComponent } from './components/expenselist/expenselist.component';
 import { AddExpenseComponent } from './components/add-expense/add-expense.component';
 import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
+import { AddloanpaymentComponent } from './components/addloanpayment/addloanpayment.component';
+import { AddItemsComponent } from './components/add-items/add-items.component';
 
 const routes: Routes = [
   {path:"",component:LoginComponent},
   {path:"home",component:HomeComponent},
   {path:"expenses",component:ExpenselistComponent},
   {path:"expenses/addexpense",component:AddExpenseComponent},
-  {path:"expenses/dashboard",component:ExpensedashboardComponent}
+  {path:"expenses/dashboard",component:ExpensedashboardComponent},
+  {path:"loan/addloanpayment",component:AddloanpaymentComponent},
+  {path:"add",component:AddItemsComponent}
 ];
 
 @NgModule({
