@@ -10,19 +10,31 @@ import { provideHttpClient } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from "./enviroments/environment";
+import { SyncgridComponent } from './components/syncgrid/syncgrid.component';
+import { GridAllModule } from '@syncfusion/ej2-angular-grids';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddExpenseComponent } from './components/add-expense/add-expense.component';
+import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
+import { ExpenselistComponent } from './components/expenselist/expenselist.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    SyncgridComponent,
+    AddExpenseComponent,
+    ExpensedashboardComponent,
+    ExpenselistComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    GridAllModule,
+    NgbModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

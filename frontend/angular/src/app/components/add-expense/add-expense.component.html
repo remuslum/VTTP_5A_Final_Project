@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="row text-center">
+        <p class="fs-1 fw-semibold">Add Expense</p>
+    </div>
+    <div class="row">
+        <div class="col col-6">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col col-1">
+            <button class="btn btn-outline-secondary rounded" (click)="addExpense()">
+                <i class="bi bi-plus-circle fs-6"></i>
+            </button>
+        </div>
+    </div>
+    <form [formGroup]="form" (submit)="submitForm()">
+    @if(expenses.controls.length > 0){
+        <div class="row">
+            <p class="fs-4 fw-medium">My New Expenses</p>
+        </div>
+        <div class="row" formArrayName="expenseList">
+        @for(expense of expenses.controls;let idx = $index;track idx){
+            <div class="row border-bottom" [formGroupName]="idx">
+                <div class="col">
+                    <p class="fs-4">
+                        {{idx + 1}}
+                    </p>
+                </div>
+                <div class="col">
+                    <div class="form-floating m-2">
+                        <input type="text" class="form-control" id="floatingName{{idx}}" formControlName="name" 
+                        [class.is-invalid]="expense.get('name')?.invalid && expense.get('name')?.touched">
+                        <label for="floatingName{{idx}}">Name</label>
+                        @if(expense.get('name')?.invalid && expense.get('name')?.touched){
+                            <p class="text-danger">Invalid Name!</p>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating m-2">
+                        <input type="date" class="form-control" id="floatingDate{{idx}}" formControlName="date" 
+                        [class.is-invalid]="expense.get('date')?.invalid && expense.get('date')?.touched">
+                        <label for="floatingDate{{idx}}">Date</label>
+                        @if(expense.get('date')?.invalid && expense.get('date')?.touched){
+                            <p class="text-danger">Invalid Date!</p>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating m-2">
+                        <input type="number" class="form-control" id="floatingAmount{{idx}}" formControlName="amount" 
+                        [class.is-invalid]="expense.get('amount')?.invalid && expense.get('amount')?.touched">
+                        <label for="floatingAmount{{idx}}">Amount</label>
+                        @if(expense.get('amount')?.invalid && expense.get('amount')?.touched){
+                            <p class="text-danger">Amount must be greater than 0</p>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating m-2">
+                        <select class="form-select" id="floatingCategory{{idx}}" formControlName="category" 
+                        [class.is-invalid]="expense.get('category')?.invalid && expense.get('category')?.touched">
+                            <option value="shopping">Shopping</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="needs">Needs</option>
+                            <option value="dining">Dining</option>
+                            <option value="others">Others</option>
+                        </select>
+                        <label for="floatingCategory{{idx}}">Category</label>
+                        @if(expense.get('category')?.invalid && expense.get('category')?.touched){
+                            <p class="text-danger">Category cannot be empty</p>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating m-2">
+                        <textarea class="form-control" id="floatingDescription{{idx}}" formControlName="description" 
+                        [class.is-invalid]="expense.get('description')?.invalid && expense.get('description')?.touched"></textarea>
+                        <label for="floatingDescription{{idx}}">Description</label>
+                        @if(expense.get('description')?.invalid && expense.get('description')?.touched){
+                            <p class="text-danger">Description cannot be empty</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+        <div class="row text-center mt-3">
+            <div class="col">
+                <button class="btn btn-primary" type="submit">
+                    Save
+                    <i class="bi bi-save ms-3"></i>
+                </button>
+            </div>
+            
+        </div>
+        
+    }
+    
+    @else {
+        <div class="row text-center">
+            <p class="fs-2 fw-lighter fst-italic">Press the + button above to add an expense</p>
+        </div>
+    }
+    </form>
+</div>
