@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GooglesigninService } from '../../service/googlesignin.service';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
+import { UpdateStoreService } from '../../store/updatestore.service';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +12,16 @@ import firebase from 'firebase/compat/app';
 export class LoginComponent{
   private googleSignInSvc = inject(GooglesigninService)
   private router = inject(Router)
+  private updateStore = inject(UpdateStoreService)
 
   signInWithGoogle(){
-    this.googleSignInSvc.signInWithGoogle().then((token) => {
-      console.log(token)
-      this.router.navigate(["/home"])
-    })
+    this.googleSignInSvc.signInWithGoogle().then(async (user) => {
+      const token = await user.getIdToken();
+      this.updateStore.updateEmailAndToken(user.email, token);
+      this.router.navigate(["/home"]);
+    }).catch(error => {
+      console.error("Google sign-in failed:", error);
+      // Add appropriate error handling here
+    });
   }
 }

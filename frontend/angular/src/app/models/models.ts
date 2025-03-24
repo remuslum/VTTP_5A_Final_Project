@@ -11,3 +11,18 @@ export interface Duration {
     duration : number 
     frequency : string
 }
+
+export interface Expense {
+    name : string
+    date : string
+    amount : number
+    category : string
+    description : string
+    email : string
+}
+
+export interface Loan {
+    amount : number
+    description : string
+    email : string
+}

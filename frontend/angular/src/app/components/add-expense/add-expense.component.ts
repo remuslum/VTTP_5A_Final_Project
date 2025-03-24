@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { noFutureDateValidator } from '../../models/validators/NoFutureDateValidator';
+import { Expense } from '../../models/models';
+import { AddService } from '../../service/add.service';
 
 @Component({
   selector: 'app-add-expense',
@@ -10,6 +12,7 @@ import { noFutureDateValidator } from '../../models/validators/NoFutureDateValid
 })
 export class AddExpenseComponent implements OnInit{
   private fb = inject(FormBuilder)
+  private addSvc = inject(AddService)
   
   protected form !: FormGroup
   protected expenses !: FormArray
@@ -42,6 +45,16 @@ export class AddExpenseComponent implements OnInit{
   }
 
   protected submitForm():void{
-    console.log(this.form.value)
+    const expenses: Expense[] = this.form.value.expenseList.map((element: any) => ({
+      name: element.name,
+      date: element.date,
+      amount: element.amount,
+      category: element.category,
+      description: element.description,
+      email: "remus@abc.com"
+    }));
+    
+    this.addSvc.addExpenses(expenses).then((response) => console.log(response))
+
   }
 }

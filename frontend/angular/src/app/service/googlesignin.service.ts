@@ -9,11 +9,11 @@ export class GooglesigninService {
 
   private afAuth = inject(AngularFireAuth)
   // Google Sign-In
-  async signInWithGoogle():Promise<String | null> {
+  async signInWithGoogle():Promise<any> {
     try {
       const result = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      const token = await result.user?.getIdToken()
-      return token || null
+      const user = result.user
+      return user
     } catch (error) {
       console.error('Google Sign-In Error:', error);
       return null;
