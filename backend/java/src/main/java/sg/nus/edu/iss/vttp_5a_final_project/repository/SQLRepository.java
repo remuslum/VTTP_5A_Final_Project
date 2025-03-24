@@ -102,7 +102,7 @@ public class SQLRepository {
     }
 
     public Optional<Integer> checkValidLoanId(String loanId){
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_LOAN, Integer.class,loanId));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(GET_LOAN, Integer.class,loanId));
     }
 
     public List<Loan> getAllLoans(String email){
