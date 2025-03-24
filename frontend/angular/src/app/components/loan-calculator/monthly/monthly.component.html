@@ -4,32 +4,59 @@
             Calculate Monthly Payment
         </p>
     </div>
-    <form [formGroup]="form">
+    <form [formGroup]="form" (submit)="submitForm()">
         <div class="row">
             <div class="mb-3">
                 <label for="amount" class="form-label">Amount</label>
-                <input type="number" class="form-control" id="amount" formControlName="amount">
+                <input type="number" class="form-control" id="amount" formControlName="amount" 
+                [ngbTooltip]="form.get('amount')?.invalid && form.get('amount')?.touched ? 'Invalid, amount must be greater than 100' : ''" 
+                [class.is-invalid]="form.get('amount')?.invalid && form.get('amount')?.touched">
             </div>
             <div class="mb-3">
                 <label for="interestRate" class="form-label">Interest Rate</label>
-                <input type="number" class="form-control" id="interestRate" formControlName="interestRate">
+                <input type="number" class="form-control" id="interestRate" formControlName="interestRate"
+                [ngbTooltip]="form.get('interestRate')?.invalid && form.get('interestRate')?.touched ? 'Invalid, interest rate must be greater than 0.01' : ''" 
+                [class.is-invalid]="form.get('interestRate')?.invalid && form.get('interestRate')?.touched">
+                <div class="alert alert-dark mt-3">
+                    <i class="bi bi-info-circle"></i>
+                    <span class="text-decoration-underline"> Please enter interest rate as %</span>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="duration" class="form-label">Duration</label>
-                <input type="number" class="form-control" id="duration" formControlName="duration">
+                <input type="number" class="form-control" id="duration" formControlName="duration" 
+                [ngbTooltip]="form.get('duration')?.invalid && form.get('duration')?.touched ? 'Invalid, duration must be greater than 100' : ''" 
+                [class.is-invalid]="form.get('duration')?.invalid && form.get('duration')?.touched">
             </div>
             <div class="mb-3">
                 <label for="frequency" class="form-label">Frequency</label>
-                <select id="frequency" class="form-select" formControlName="frequency">
-                    <option value="monthly">Monthly</option>
-                    <option value="quarterly">Quarterly</option>
-                    <option value="annually">Yearly</option>
+                <select id="frequency" class="form-select" formControlName="frequency" 
+                [ngbTooltip]="form.get('frequency')?.invalid && form.get('frequency')?.touched ? 'Invalid, frequency cannot be empty' : ''" 
+                [class.is-invalid]="form.get('frequency')?.invalid && form.get('frequency')?.touched">
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Yearly">Yearly</option>
                 </select>
             </div>
         </div>
+        @if(monthlyPayment.value > 0){
+            <div class="row text-center">
+                <p class="fs-4 fst-italic" [@fadeIn]="monthlyPayment.value">
+                    Your monthly payment is {{monthlyPayment.value}}
+                </p>
+            </div>
+        }
+
+        @if(!validSubmission){
+            <ngb-alert type="danger">
+                <p class="fs-6 fw-bold">
+                    Not all fields are valid
+                </p>
+            </ngb-alert>
+        }
         <div class="row text-end">
             <div class="col mb-3">
-                <button class="btn btn-secondary">Submit</button>
+                <button class="btn btn-secondary" type="submit">Submit</button>
             </div>
         </div>   
     </form>

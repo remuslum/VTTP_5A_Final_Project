@@ -21,6 +21,8 @@ import { AddItemsComponent } from './components/add-items/add-items.component';
 import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
 import { MonthlyComponent } from './components/loan-calculator/monthly/monthly.component';
 import { DurationComponent } from './components/loan-calculator/duration/duration.component'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { DurationComponent } from './components/loan-calculator/duration/duratio
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
@@ -48,7 +51,7 @@ import { DurationComponent } from './components/loan-calculator/duration/duratio
     NgbTooltipModule,
     NgbNavModule
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(),provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
