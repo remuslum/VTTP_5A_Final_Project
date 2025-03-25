@@ -1,0 +1,7 @@
+.hover-effect:hover {
+    color: var(--bs-secondary) !important;
+}
+
+.btn-hover-effect:hover {
+    background-color: var(--bs-success) !important;
+}

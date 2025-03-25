@@ -26,3 +26,8 @@ export interface Loan {
     description : string
     email : string
 }
+
+export interface UserDetails {
+    email : string
+    password : string
+}
