@@ -19,6 +19,7 @@ import sg.nus.edu.iss.finance_telegram_bot.service.FinanceTelegramService;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_EXPENSE_MESSAGE;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_LOAN_PAYMENT_MESSAGE;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ALREADY_REGISTERED;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.CHATBOT_NOT_STARTED;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.EXIT_CHATBOT;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_REGISTERD;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_MESSAGE;
@@ -120,14 +121,18 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
                         sendTextMessage(chatId,NOT_REGISTERD);
                     }
                 } else if (text.equalsIgnoreCase("/startchat")){
-                    userChatBotState.put(chatId, true);
-                    sendTextMessage(chatId, WELCOME_TO_CHATBOT);
+                    if(isUserRegistered){
+                        userChatBotState.put(chatId, true);
+                        sendTextMessage(chatId, WELCOME_TO_CHATBOT);
+                    } else {
+                        sendTextMessage(chatId,NOT_REGISTERD); 
+                    } 
                 } else if (text.equalsIgnoreCase("/exitchat")){
                     if(userChatBotState.get(chatId)){
                         userChatBotState.put(chatId, false);
                         sendTextMessage(chatId, EXIT_CHATBOT);
                     } else {
-                        sendTextMessage(chatId, text);
+                        sendTextMessage(chatId, CHATBOT_NOT_STARTED);
                     }
                 }
                 else {
