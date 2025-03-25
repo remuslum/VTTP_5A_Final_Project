@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit{
 
   protected token$!:Observable<string>
   protected email$!:Observable<string>
+  protected active:string = 'expenses'
 
   ngOnInit(): void {
     console.log(this.queryStore.getValue())

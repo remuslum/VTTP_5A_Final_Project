@@ -1,7 +1,50 @@
-<p>home works!</p>
-<p class="fs-3">
-    Token: {{token$ | async}}
-</p>
-<p class="fs-3">
-    Email: {{email$ | async}}
-</p>
+<div class="container-fluid vh-100 d-flex flex-column">
+    <div class="w-100">
+        <div class="d-flex container-fluid">
+            <h1 class="display-4 fw-semibold">Dashboard</h1>
+        </div>
+        <nav class="navbar navbar-expand-lg bg-primary">
+            <div class="container-fluid d-flex justify-content-between">
+                <div class="ms-2">
+                    <a class="navbar-brand text-white" [routerLink]="'/home'">Home</a>
+                </div>
+                <div class="me-2">
+                    <ul class="navbar-nav mb-2">
+                        <li class="nav-item">
+                            <a [routerLink]="'/calculator'" class="nav-link text-white">Calculator</a>
+                        </li>
+                        <li class="nav-item">
+                            <a [routerLink]="'/add'" class="nav-link text-white">Add Expense/Loan</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-secondary rounded-pill">Logout</button>
+                        </li>
+                    </ul>
+                </div>       
+            </div>
+        </nav>
+    </div>
+    <div class="d-flex mt-3">
+        <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills flex-column col col-1" orientation="vertical">
+            <ng-container ngbNavItem="expenses">
+                <button ngbNavLink>Expenses</button>
+                <ng-template ngbNavContent>
+                    <app-expenses></app-expenses>
+                </ng-template>
+            </ng-container>
+            <ng-container ngbNavItem="loans">
+                <button ngbNavLink>Loans</button>
+                <ng-template ngbNavContent>
+                    <app-loans></app-loans>
+                </ng-template>
+            </ng-container>
+        </div>
+        <div class="col" [ngbNavOutlet]="nav"></div>
+    </div>
+    
+</div>
+
+
+
+
+

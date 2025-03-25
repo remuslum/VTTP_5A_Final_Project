@@ -23,6 +23,11 @@ import { MonthlyComponent } from './components/loan-calculator/monthly/monthly.c
 import { DurationComponent } from './components/loan-calculator/duration/duration.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ExpensesComponent } from './components/dashboard/expenses/expenses.component';
+import { LoansComponent } from './components/dashboard/loans/loans.component';
+import { ChartModule, ChartAllModule, AccumulationChartModule, AccumulationDataLabelService, AccumulationLegendService, PieSeriesService} from '@syncfusion/ej2-angular-charts';
+import { BarchartComponent } from './components/dashboard/expenses/barchart/barchart.component';
+import { LinechartComponent } from './components/dashboard/expenses/linechart/linechart.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     AddItemsComponent,
     LoanCalculatorComponent,
     MonthlyComponent,
-    DurationComponent
+    DurationComponent,
+    ExpensesComponent,
+    LoansComponent,
+    BarchartComponent,
+    LinechartComponent
   ],
   imports: [
     BrowserModule,
@@ -49,9 +58,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     GridAllModule,
     NgbModule,
     NgbTooltipModule,
-    NgbNavModule
+    NgbNavModule,
+    ChartModule, 
+    ChartAllModule,
+    AccumulationChartModule
+   
   ],
-  providers: [provideHttpClient(),provideAnimationsAsync()],
+  providers: [provideHttpClient(),provideAnimationsAsync(), AccumulationDataLabelService,AccumulationLegendService,PieSeriesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

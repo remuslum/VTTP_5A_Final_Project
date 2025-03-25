@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@popperjs/core": "^2.11.8",
     "@stripe/stripe-js": "^6.1.0",
+    "@syncfusion/ej2-angular-charts": "^29.1.33",
     "@syncfusion/ej2-angular-grids": "^28.2.12",
     "@syncfusion/ej2-material-theme": "~28.2.12",
     "@types/stripe-v3": "^3.1.33",
