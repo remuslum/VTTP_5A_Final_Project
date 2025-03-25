@@ -53,4 +53,19 @@ public class Messages {
     """
         You have already verified your email.        
     """;
+
+    public static final String WELCOME_TO_CHATBOT = 
+    """
+        Welcome to our chatbot. How may I assist you?        
+    """;
+
+    public static final String EXIT_CHATBOT =
+    """
+        Thanks for using our service and we hope you have a great day.        
+    """;
+
+    public static final String CHATBOT_NOT_STARTED = 
+    """
+        You have not started a chatbot session. Start one by typing /startchat.        
+    """;
 }

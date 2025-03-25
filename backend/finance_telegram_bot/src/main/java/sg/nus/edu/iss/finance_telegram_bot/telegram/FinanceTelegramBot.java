@@ -14,33 +14,38 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import sg.nus.edu.iss.finance_telegram_bot.models.ExpenseValidator;
+import sg.nus.edu.iss.finance_telegram_bot.service.DeepSeekService;
 import sg.nus.edu.iss.finance_telegram_bot.service.FinanceTelegramService;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_EXPENSE_MESSAGE;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ADD_LOAN_PAYMENT_MESSAGE;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ALREADY_REGISTERED;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.EXIT_CHATBOT;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_REGISTERD;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_MESSAGE;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_TO_CHATBOT;
 
 @Component
 public class FinanceTelegramBot extends TelegramLongPollingBot{
 
-    private final ExpenseValidator expenseValidator;
     private final String botUsername;
     private final Map<String, Boolean> userExpenseState = new HashMap<>();
     private final Map<String, Boolean> userLoanPaymentState = new HashMap<>();
     private final Map<String, Boolean> userCheckEmailState = new HashMap<>();
+    private final Map<String, Boolean> userChatBotState = new HashMap<>();
+
     private String userEmail = "";
     private boolean isUserRegistered = false;
 
     @Autowired
     private FinanceTelegramService telegramService;
 
+    @Autowired
+    private DeepSeekService deepSeekService;
+
     public FinanceTelegramBot(@Value("${telegram.bot.username}")String botUsername,
-    @Value("${telegram.bot.token}")String botToken, ExpenseValidator expenseValidator){
+    @Value("${telegram.bot.token}")String botToken){
         super(botToken);
         this.botUsername = botUsername;
-        this.expenseValidator = expenseValidator;
     }
 
     @Override
@@ -79,7 +84,9 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
                     userCheckEmailState.put(chatId, false);
                 } 
                 sendTextMessage(chatId, response.getBody());
-
+            } else if (userChatBotState.getOrDefault(chatId, false)){
+                // Send chat bot response
+                sendTextMessage(chatId, deepSeekService.getChatResponse(text));
             } else {
                 // Process commands manually
                 if (text.equalsIgnoreCase("/start")) {
@@ -111,6 +118,16 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
                         sendTextMessage(chatId, telegramService.getAllLoans(userEmail));
                     } else {
                         sendTextMessage(chatId,NOT_REGISTERD);
+                    }
+                } else if (text.equalsIgnoreCase("/startchat")){
+                    userChatBotState.put(chatId, true);
+                    sendTextMessage(chatId, WELCOME_TO_CHATBOT);
+                } else if (text.equalsIgnoreCase("/exitchat")){
+                    if(userChatBotState.get(chatId)){
+                        userChatBotState.put(chatId, false);
+                        sendTextMessage(chatId, EXIT_CHATBOT);
+                    } else {
+                        sendTextMessage(chatId, text);
                     }
                 }
                 else {

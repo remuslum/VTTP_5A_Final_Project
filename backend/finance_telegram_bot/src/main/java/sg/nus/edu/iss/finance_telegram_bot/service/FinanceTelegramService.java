@@ -27,7 +27,6 @@ public class FinanceTelegramService {
     private EmailRepository emailRepository;
 
     public String sendExpense(Map<String, String> fields){
-        System.out.println(fields);
         return expenseRepository.sendExpenseToBackend(fields).getBody();
     }
 
