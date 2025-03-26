@@ -28,7 +28,6 @@ public class LoanPaymentController {
         double annualInterest = object.getJsonNumber("interestRate").doubleValue();
         int duration = object.getInt("duration");
         String paymentType = object.getString("frequency");
-        System.out.println(loanService.getLoanAmount(loanAmount, annualInterest, duration, paymentType));
 
         return new ResponseEntity<>(loanService.getLoanAmount(loanAmount, annualInterest, duration, paymentType), HttpStatusCode.valueOf(200));
     }

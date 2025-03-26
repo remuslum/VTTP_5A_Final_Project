@@ -3,10 +3,11 @@ package sg.nus.edu.iss.vttp_5a_final_project.service;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import sg.nus.edu.iss.vttp_5a_final_project.repository.LoanCalculatorRepository;
 
 @Service
@@ -29,9 +30,9 @@ public class LoanCalculatorService {
         }
         // Format to 2 decimal places
         DecimalFormat df = new DecimalFormat("##.00");
-        Document d = new Document().append("payment", Double.valueOf(df.format(payment)));
+        JsonObject object = Json.createObjectBuilder().add("payment", Double.parseDouble(df.format(payment))).build();
 
-        return d.toJson();
+        return object.toString();
     }
 
     public String getNumberOfPeriods(int loanAmount, double annualInterest, double paymentPerPeriod, String paymentType){
@@ -46,7 +47,7 @@ public class LoanCalculatorService {
             case "Yearly" -> expectedRepaymentDate = expectedRepaymentDate.plusYears(numberOfPeriods);
         }
 
-        Document d = new Document().append("date_of_last_repayment", expectedRepaymentDate.toString());
-        return d.toJson(); 
+        JsonObject object = Json.createObjectBuilder().add("date_of_last_repayment", expectedRepaymentDate.toString()).build();
+        return object.toString(); 
     }
 }

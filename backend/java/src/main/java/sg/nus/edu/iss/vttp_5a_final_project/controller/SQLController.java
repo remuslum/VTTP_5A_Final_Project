@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -45,19 +44,19 @@ public class SQLController {
                 JsonObject error = Json.createObjectBuilder().add("error","Unauthorized access").build();
                 return new ResponseEntity<>(error.toString(),HttpStatus.UNAUTHORIZED);
             } else {
-                Document d = new Document();
+                JsonObjectBuilder builder = Json.createObjectBuilder();
                 try {
                     boolean isInserted = sqlService.insertExpenses(payload);
                     if (isInserted){
-                        d.append("message", "Successfully updated");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(201));
+                        builder.add("message", "Successfully updated");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(201));
                     } else {
-                        d.append("message","Unsuccessful update, please check the parameters");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(404));
+                        builder.add("message","Unsuccessful update, please check the parameters");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(404));
                     }
                 } catch (DataAccessException|InterruptedException|ExecutionException e) {
-                    d.append("message", "Unsuccessful update, SQL Server is not running");
-                    return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(500));
+                    builder.add("message", "Unsuccessful update, SQL Server is not running");
+                    return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(500));
                 }
             }
         } else {
@@ -75,19 +74,19 @@ public class SQLController {
                 JsonObject error = Json.createObjectBuilder().add("error","Unauthorized access").build();
                 return new ResponseEntity<>(error.toString(),HttpStatus.UNAUTHORIZED);
             } else {
-                Document d = new Document();
+                JsonObjectBuilder builder = Json.createObjectBuilder();
                 try {
                     boolean isInserted = sqlService.insertLoan(payload);
                     if (isInserted){
-                        d.append("message", "Successfully updated");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(201));
+                        builder.add("message", "Successfully updated");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(201));
                     } else {
-                        d.append("message","Unsuccessful update, please check the parameters");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(404));
+                        builder.add("message","Unsuccessful update, please check the parameters");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(404));
                     }
                 } catch (DataAccessException|InterruptedException|ExecutionException e) {
-                    d.append("message", "Unsuccessful update, SQL Server is not running");
-                    return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(500));
+                    builder.add("message", "Unsuccessful update, SQL Server is not running");
+                    return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(500));
                 }
             }
         } else {
@@ -106,19 +105,19 @@ public class SQLController {
                 JsonObject error = Json.createObjectBuilder().add("error","Unauthorized access").build();
                 return new ResponseEntity<>(error.toString(),HttpStatus.UNAUTHORIZED);
             } else {
-                Document d = new Document();
+                JsonObjectBuilder builder = Json.createObjectBuilder();
                 try {
                     boolean isInserted = sqlService.insertLoanPayments(payload);
                     if (isInserted){
-                        d.append("message", "Successfully updated");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(201));
+                        builder.add("message", "Successfully updated");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(201));
                     } else {
-                        d.append("message","Unsuccessful update, please check the parameters");
-                        return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(404));
+                        builder.add("message","Unsuccessful update, please check the parameters");
+                        return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(404));
                     }
                 } catch (DataAccessException e) {
-                    d.append("message", "Unsuccessful update, SQL Server is not running");
-                    return new ResponseEntity<>(d.toJson(), HttpStatusCode.valueOf(500));
+                    builder.add("message", "Unsuccessful update, SQL Server is not running");
+                    return new ResponseEntity<>(builder.build().toString(), HttpStatusCode.valueOf(500));
                 }
             }
         } else {

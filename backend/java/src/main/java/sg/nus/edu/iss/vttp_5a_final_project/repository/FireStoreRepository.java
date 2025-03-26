@@ -72,8 +72,6 @@ public class FireStoreRepository {
     }
 
     public boolean addLoansIntoCollection(Loan loan){
-        WriteBatch writeBatch = firestore.batch();
-
         // Collection name is the email of the user
         String email = loan.getEmail();
         String documentId = firestore.collection(email).document().getId();
