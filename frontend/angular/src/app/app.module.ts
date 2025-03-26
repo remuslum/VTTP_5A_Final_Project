@@ -9,7 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { provideHttpClient } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { firebaseConfig } from "./enviroments/environment";
+import { firebaseConfig, syncFusion } from "./enviroments/environment";
 import { SyncgridComponent } from './components/syncgrid/syncgrid.component';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { NgbModule, NgbNavModule, NgbPaginationModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,14 @@ import { LoansComponent } from './components/dashboard/loans/loans.component';
 import { ChartModule, ChartAllModule, AccumulationChartModule, AccumulationDataLabelService, AccumulationLegendService, PieSeriesService} from '@syncfusion/ej2-angular-charts';
 import { BarchartComponent } from './components/dashboard/expenses/barchart/barchart.component';
 import { LinechartComponent } from './components/dashboard/expenses/linechart/linechart.component';
+import { AddloanComponent } from './components/addloan/addloan.component';
+import { LoanpaymentslistComponent } from './components/loanpaymentslist/loanpaymentslist.component';
+import { registerLicense } from '@syncfusion/ej2-base';
+import { UpdateexpenseComponent } from './components/updateexpense/updateexpense.component';
+import { SignupComponent } from './components/signup/signup.component';
 
+registerLicense(syncFusion.licensekey)
+registerLicense(syncFusion.angularLicenseKey)
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +53,11 @@ import { LinechartComponent } from './components/dashboard/expenses/linechart/li
     ExpensesComponent,
     LoansComponent,
     BarchartComponent,
-    LinechartComponent
+    LinechartComponent,
+    AddloanComponent,
+    LoanpaymentslistComponent,
+    UpdateexpenseComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

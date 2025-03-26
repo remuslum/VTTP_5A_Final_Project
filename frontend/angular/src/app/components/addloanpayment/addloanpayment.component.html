@@ -18,6 +18,15 @@
             <div class="row">
                 <p class="fs-4 fw-medium">New Loan Payment</p>
             </div>
+            <div class="row d-flex justify-content-center align-items-center">
+                <select class="form-select" formControlName="id">
+                    @for(loan of loans; track $index){
+                        <option [value]="loan.id">
+                            Loan {{loan.id}} - {{loan.description}}
+                        </option>
+                    }
+                </select>
+            </div>
             <div class="row" formArrayName="paymentsList">
                 @for(payment of payments.controls;let idx = $index; track idx){
                     <div class="row border-bottom text-center" [formGroupName]="idx">
@@ -38,11 +47,11 @@
                         </div>
                         <div class="col-5">
                             <div class="form-floating m-2">
-                                <input type="text" class="form-control" id="floatingDescription{{idx}}" formControlName="description" 
-                                [class.is-invalid]="payment.get('description')?.invalid && payment.get('description')?.touched">
-                                <label for="floatingDescription{{idx}}">Description</label>
-                                @if(payment.get('description')?.invalid && payment.get('description')?.touched){
-                                    <p class="text-danger">Description cannot be blank!</p>
+                                <input type="date" class="form-control" id="floatingDescription{{idx}}" formControlName="date" 
+                                [class.is-invalid]="payment.get('date')?.invalid && payment.get('date')?.touched">
+                                <label for="floatingDescription{{idx}}">Date</label>
+                                @if(payment.get('date')?.invalid && payment.get('date')?.touched){
+                                    <p class="text-danger">Date cannot be blank!</p>
                                 }
                             </div>
                         </div>

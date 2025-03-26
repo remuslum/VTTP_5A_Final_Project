@@ -2,6 +2,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>No.</th>
                 <th>Name</th>
                 <th>Date</th>
                 <th>Category</th>
@@ -12,6 +13,9 @@
         <tbody>
             @for(expense of expensesSlice;let idx = $index; track idx){
                 <tr>
+                    <td>
+                        {{expense.id}}
+                    </td>
                     <td>
                         {{expense.name}}
                     </td>
@@ -26,6 +30,9 @@
                     </td>
                     <td>
                         {{expense.amount}}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" (click)="goToUpdate(expense)">Update</button>
                     </td>
                 </tr>
             }

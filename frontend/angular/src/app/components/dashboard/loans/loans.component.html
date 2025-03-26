@@ -1,13 +1,20 @@
 <div class="container-fluid h-100">
-    <div class="row">
-        <h1>Progress on loan 1: </h1>
-        <ngb-progressbar type="success" [value]="50"/>
-    </div>
     <div class="row text-center h-100 d-flex justify-content-center align-items-center">
-        <div class="col col-6">
-            <h1>Most Recent Loan Payment: </h1>
-            <p>Loan payment of 20 paid on 24/06/2024</p>
-            <p>Make a loan payment</p>
+        <div class="col">
+            <h1 class="fs-3 text-secondary">Most Recent Loan Payment: </h1>
+            <p class="display-4">Loan payment of <span class="fw-bold text-primary">{{latestLoanPayment.amount}} </span>paid on <span class="fw-bold text-primary">{{latestLoanPayment.date}}</span></p>
         </div>
     </div>
+    <hr/>
+    @for(loanPayment of loanPayments; let idx = $index; track idx){
+        <div class="row">
+            <h1>Progress on loan {{idx + 1}}: ({{loanPayment.description}})</h1>
+            <ngb-progressbar type="primary" [value]="loanPayment.total_sum" [max]="loanPayment.amount + loanPayment.total_sum" [showValue]="true"/>
+            <p class="fs-5">
+                Amount remaining: ${{loanPayment.amount}}
+            </p>
+        </div> 
+    }
+
+    
 </div>

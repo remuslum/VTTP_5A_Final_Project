@@ -7,6 +7,7 @@ import { syncFusion } from './app/enviroments/environment';
 
 // Registering Syncfusion license key
 registerLicense(syncFusion.licensekey);
+registerLicense(syncFusion.angularLicenseKey);
 
 platformBrowserDynamic().bootstrapModule(AppModule, {
   ngZoneEventCoalescing: true,

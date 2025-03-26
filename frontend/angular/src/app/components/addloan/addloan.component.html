@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row text-center">
+        <p class="fs-1 fw-semibold">Add Loan</p>
+    </div>
+    <form [formGroup]="form" (submit)="submitForm()">
+        <div class="row">
+            <div class="form-floating m-2">
+                <input type="number" class="form-control" id="floatingAmount" formControlName="amount" 
+                [class.is-invalid]="form.get('amount')?.invalid && form.get('amount')?.touched">
+                <label for="floatingAmount">Amount</label>
+                @if(form.get('amount')?.invalid && form.get('amount')?.touched){
+                    <p class="text-danger">Invalid Amount!</p>
+                }
+            </div>
+            <div class="form-floating m-2">
+                <input type="text" class="form-control" id="floatingDescription" formControlName="description" 
+                [class.is-invalid]="form.get('description')?.invalid && form.get('description')?.touched">
+                <label for="floatingDescription">Description</label>
+                @if(form.get('description')?.invalid && form.get('description')?.touched){
+                    <p class="text-danger">Invalid Description!</p>
+                }
+            </div>
+        </div>
+        <div class="row text-center mt-3">
+            <div class="col">
+                <button class="btn btn-primary" type="submit">
+                    Save
+                    <i class="bi bi-save ms-3"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

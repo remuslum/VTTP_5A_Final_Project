@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Expense } from '../../models/models';
 import { GetService } from '../../service/get.service';
 import { QueryStoreService } from '../../store/querystore.service';
+import { ExpenseService } from '../../service/expense.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-expenselist',
@@ -12,6 +14,8 @@ import { QueryStoreService } from '../../store/querystore.service';
 export class ExpenselistComponent implements OnInit{
   private getSvc = inject(GetService)
   private queryStore = inject(QueryStoreService)
+  private expSvc = inject(ExpenseService)
+  private router = inject(Router)
   private email:string = ''
 
   protected expenses:Expense[] = []
@@ -41,6 +45,9 @@ export class ExpenselistComponent implements OnInit{
     );
   }
 
-  
-  
+  goToUpdate(expense:Expense){
+    this.expSvc.addExpense(expense)
+    this.router.navigate(["/updateexpense"])
+  }
+
 }

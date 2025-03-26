@@ -24,6 +24,12 @@
                 <app-addloanpayment></app-addloanpayment>
             </ng-template>
         </li>
+        <li [ngbNavItem]="3">
+            <button ngbNavLink>Loan</button>
+            <ng-template ngbNavContent>
+                <app-addloan></app-addloan>
+            </ng-template>
+        </li>
     </ul>
     <div class="container" [ngbNavOutlet]="nav">
 

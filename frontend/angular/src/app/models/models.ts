@@ -13,6 +13,7 @@ export interface Duration {
 }
 
 export interface Expense {
+    id: number
     name : string
     date : string
     amount : number
@@ -22,9 +23,16 @@ export interface Expense {
 }
 
 export interface Loan {
+    id:string
     amount : number
     description : string
-    email : string
+}
+
+export interface LoanPayment {
+    id:number
+    loan_id:string
+    amount:number
+    description:string
 }
 
 export interface UserDetails {
@@ -50,4 +58,38 @@ export interface MonthSpending{
 export interface MaxSpending{
     category:string
     spending:number
+}
+
+export interface SumOfLoanPayments{
+    loan_id:string
+    total_sum:number
+    amount:number
+    description:string
+}
+
+export interface LatestLoanPayment{
+    amount:number
+    description:string
+    date:string
+}
+
+export interface addLoan {
+    amount:number
+    description:string
+    email:string
+}
+
+export interface LoanPaymentTableItem {
+    id:number
+    amount:number
+    description:string
+    date:string
+}
+
+export interface User {
+    firstName:string
+    lastName:string
+    email:string
+    password:string
+    dateOfBirth:string
 }

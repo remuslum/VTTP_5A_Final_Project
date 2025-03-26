@@ -14,13 +14,16 @@
                             <a [routerLink]="'/calculator'" class="nav-link text-white">Calculator</a>
                         </li>
                         <li class="nav-item">
-                            <a [routerLink]="'/add'" class="nav-link text-white">Add Expense/Loan</a>
+                            <a [routerLink]="'/add'" class="nav-link text-white">Add Expense/Loan Payment</a>
                         </li>
                         <li class="nav-item">
                             <a [routerLink]="'/expenses'" class="nav-link text-white">View Expenses</a>
                         </li>
                         <li class="nav-item">
-                            <button class="btn btn-secondary rounded-pill">Logout</button>
+                            <a [routerLink]="'/loanpayment'" class="nav-link text-white">View Loan Payments</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-secondary rounded-pill" (click)="logUserOut()">Logout</button>
                         </li>
                     </ul>
                 </div>       
