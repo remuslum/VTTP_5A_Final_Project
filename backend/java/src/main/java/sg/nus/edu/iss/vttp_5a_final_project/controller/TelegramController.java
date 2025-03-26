@@ -1,6 +1,10 @@
 package sg.nus.edu.iss.vttp_5a_final_project.controller;
 
+import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +29,11 @@ public class TelegramController {
 
     @PostMapping(path="/insert/expense",produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> insertExpense(@RequestBody String payload){
-        if(sqlService.insertExpenses(payload)){
+        try {
+            sqlService.insertExpenses(payload);
             JsonObject response = Json.createObjectBuilder().add("message", "Successfully added expense").build();
             return ResponseEntity.ok(response.toString());
-        } else {
+        } catch (DataAccessException|InterruptedException|ExecutionException e) {
             JsonObject response = Json.createObjectBuilder().add("message", "Unable to add expense").build();
             return ResponseEntity.internalServerError().body(response.toString());
         }
@@ -49,7 +54,7 @@ public class TelegramController {
     public ResponseEntity<String> getAllLoans(@RequestParam String email){
         try {
             return ResponseEntity.ok(sqlService.getAllLoans(email).toString());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JsonObject object = Json.createObjectBuilder().add("message",e.getMessage()).build();
             return ResponseEntity.badRequest().body(object.toString());
         }

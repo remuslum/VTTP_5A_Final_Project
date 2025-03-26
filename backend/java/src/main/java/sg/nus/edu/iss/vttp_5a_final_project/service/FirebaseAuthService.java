@@ -16,9 +16,20 @@ public class FirebaseAuthService {
         try {
             // Verify ID token using Firebase Admin SDK
             FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
-            return decodedToken.toString(); // Token is valid
+            return decodedToken.toString();
         } catch (Exception e) {
-            return "Invalid or expired Firebase ID token";
+            return "";
         }
     }
+
+    public String logOut(String idToken){
+        try {
+            FirebaseToken decodedToken = firebaseAuth.verifyIdToken(idToken);
+            firebaseAuth.revokeRefreshTokens(decodedToken.getUid());
+            return decodedToken.toString();
+        } catch (Exception e){
+            return "";
+        }
+    }
+        
 }
