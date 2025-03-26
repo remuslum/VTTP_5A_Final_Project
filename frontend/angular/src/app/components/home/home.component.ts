@@ -10,27 +10,12 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
-  private queryStore = inject(QueryStoreService)
+export class HomeComponent{
   private addSvc = inject(AddService)
   private router = inject(Router)
 
-  protected token$!:Observable<string>
-  protected email$!:Observable<string>
   protected active:string = 'expenses'
 
-  ngOnInit(): void {
-    console.log(this.queryStore.getValue())
-    this.token$ = this.queryStore.token$
-    this.token$.subscribe({
-      next : data => console.log(data)
-    })
-
-    this.email$ = this.queryStore.email$
-    this.email$.subscribe({
-      next : data => console.log(data)
-    })
-  }
 
   logUserOut(){
     this.addSvc.logUserOut().then((response) => {
