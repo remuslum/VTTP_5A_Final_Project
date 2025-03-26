@@ -22,38 +22,45 @@ public class LoanCalculator {
     }
 
     public double calculateLoanPayment(int duration, int frequencyOfPayment){
-        double paymentPerInterest = this.annualInterest/frequencyOfPayment;
-        int numOfPayments = duration * frequencyOfPayment;
-
-        /* Formula: 
-        *                     ((principal) * (monthly interest) * (1 + monthly interest)**n)
-        *         amount =    --------------------------------------------------------------
-        *                                    (1 + monthly interest)**n - 1 
-        */
+        double decimalInterest = this.annualInterest / 100.0;
         
-        double compoundedInterest = Math.pow((1 + paymentPerInterest),numOfPayments);
-        double numerator = loanAmount * paymentPerInterest * compoundedInterest;
-        double denominator = compoundedInterest - 1;
-
-        return numerator/denominator;
+        double periodicInterest = decimalInterest / frequencyOfPayment;
+        
+        int numOfPayments = duration * frequencyOfPayment;
+        
+        if (periodicInterest == 0) {
+            return this.loanAmount / numOfPayments;
+        }
+        
+        double compoundedInterest = Math.pow((1 + periodicInterest), numOfPayments);
+        return (this.loanAmount * periodicInterest * compoundedInterest) / (compoundedInterest - 1);
     }
 
     public long calcuateNumberOfPayments(double paymentPerPeriod, int frequencyOfPayment){
-        /* Formula: 
-         *              log(paymentPerPeriod/(paymentPerPeriod - (principal * monthly interest)))
-         *  duration =  -------------------------------------------------------------------------
-         *                                   log(1 + monthly interest)
-         */
-
+        // Convert annual interest from percentage to decimal
+        double decimalInterest = this.annualInterest / 100.0;
         
-        double interestPerPayment = this.annualInterest/frequencyOfPayment;
+        // Calculate periodic interest rate
+        double periodicInterest = decimalInterest / frequencyOfPayment;
         
-        // Calculation of numerator
-        double numerator = Math.log(paymentPerPeriod / (paymentPerPeriod - (loanAmount * interestPerPayment)));
+        // Handle special cases
+        if (periodicInterest == 0) {
+            // Zero interest case - simple division
+            return (int) Math.ceil(loanAmount / paymentPerPeriod);
+        }
         
-        // Calculation of denominator
-        double denominator = Math.log(1 + interestPerPayment);
-
-        return Math.round(numerator/denominator);
+        // Verify valid inputs
+        if (paymentPerPeriod <= loanAmount * periodicInterest) {
+            throw new IllegalArgumentException("Payment per period is too small to cover interest");
+        }
+        
+        // Calculate numerator and denominator
+        double ratio = paymentPerPeriod / (paymentPerPeriod - loanAmount * periodicInterest);
+        double numerator = Math.log(ratio);
+        double denominator = Math.log(1 + periodicInterest);
+        
+        // Calculate and round up to ensure full repayment
+        double exactPayments = numerator / denominator;
+        return (int) Math.ceil(exactPayments);
     }
 }
