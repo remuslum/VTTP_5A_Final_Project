@@ -8,16 +8,14 @@ import { ExpensedashboardComponent } from './components/expensedashboard/expense
 import { AddloanpaymentComponent } from './components/addloanpayment/addloanpayment.component';
 import { AddItemsComponent } from './components/add-items/add-items.component';
 import { LoanCalculatorComponent } from './components/loan-calculator/loan-calculator.component';
+import { checkIfAuthenticated } from './models/validators/router.validator';
 
 const routes: Routes = [
   {path:"",component:LoginComponent},
-  {path:"home",component:HomeComponent},
-  {path:"expenses",component:ExpenselistComponent},
-  {path:"expenses/addexpense",component:AddExpenseComponent},
-  {path:"expenses/dashboard",component:ExpensedashboardComponent},
-  {path:"loan/addloanpayment",component:AddloanpaymentComponent},
-  {path:"add",component:AddItemsComponent},
-  {path:"calculator",component:LoanCalculatorComponent}
+  {path:"home",component:HomeComponent, canActivate : [checkIfAuthenticated]},
+  {path:"expenses",component:ExpenselistComponent, canActivate: [checkIfAuthenticated]},
+  {path:"add",component:AddItemsComponent, canActivate: [checkIfAuthenticated]},
+  {path:"calculator",component:LoanCalculatorComponent, canActivate: [checkIfAuthenticated]}
 ];
 
 @NgModule({

@@ -31,3 +31,23 @@ export interface UserDetails {
     email : string
     password : string
 }
+
+export interface CurrentSpending {
+    amount: number
+}
+
+export interface CategorySpending {
+    spending:number
+    month:number
+    category:string
+}
+
+export interface MonthSpending{
+    spending:number
+    month:number
+}
+
+export interface MaxSpending{
+    category:string
+    spending:number
+}

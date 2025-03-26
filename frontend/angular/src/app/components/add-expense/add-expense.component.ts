@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { noFutureDateValidator } from '../../models/validators/NoFutureDateValidator';
 import { Expense } from '../../models/models';
 import { AddService } from '../../service/add.service';
+import { QueryStoreService } from '../../store/querystore.service';
 
 @Component({
   selector: 'app-add-expense',
@@ -13,12 +14,17 @@ import { AddService } from '../../service/add.service';
 export class AddExpenseComponent implements OnInit{
   private fb = inject(FormBuilder)
   private addSvc = inject(AddService)
+  private queryStore = inject(QueryStoreService)
   
   protected form !: FormGroup
   protected expenses !: FormArray
+  protected email:string = ''
 
   ngOnInit(): void {
     this.form = this.createForm()
+    this.queryStore.email$.subscribe({
+      next: data => this.email = data
+    })
   }
 
   createForm():FormGroup{
@@ -51,7 +57,7 @@ export class AddExpenseComponent implements OnInit{
       amount: element.amount,
       category: element.category,
       description: element.description,
-      email: "remus@abc.com"
+      email: this.email
     }));
     
     this.addSvc.addExpenses(expenses).then((response) => console.log(response))

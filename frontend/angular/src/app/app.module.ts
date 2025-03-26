@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from "./enviroments/environment";
 import { SyncgridComponent } from './components/syncgrid/syncgrid.component';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
-import { NgbModule, NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule, NgbPaginationModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddExpenseComponent } from './components/add-expense/add-expense.component';
 import { ExpensedashboardComponent } from './components/expensedashboard/expensedashboard.component';
 import { ExpenselistComponent } from './components/expenselist/expenselist.component';
@@ -61,8 +61,8 @@ import { LinechartComponent } from './components/dashboard/expenses/linechart/li
     NgbNavModule,
     ChartModule, 
     ChartAllModule,
-    AccumulationChartModule
-   
+    AccumulationChartModule,
+    NgbPaginationModule
   ],
   providers: [provideHttpClient(),provideAnimationsAsync(), AccumulationDataLabelService,AccumulationLegendService,PieSeriesService],
   bootstrap: [AppComponent]
