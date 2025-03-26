@@ -34,7 +34,7 @@ export class DurationComponent {
   private createForm():FormGroup{
     return this.fb.group({
       amount : this.fb.control<number>(0, [Validators.required, Validators.min(100)]),
-      interestRate : this.fb.control<number>(0, [Validators.required, Validators.min(0.01), Validators.max(100)]),
+      interestRate : this.fb.control<number>(0, [Validators.required, Validators.min(0), Validators.max(100)]),
       payment : this.fb.control<number>(0, [Validators.required, Validators.min(1)]),
       frequency : this.fb.control<string>('',[Validators.required])
     })
@@ -45,7 +45,7 @@ export class DurationComponent {
       const value = this.form.value
       const monthlyPayment:MonthlyPayment = {
         amount : value.amount,
-        interestRate : value.interestRate/100,
+        interestRate : value.interestRate,
         payment : value.payment,
         frequency : value.frequency
       }

@@ -22,6 +22,7 @@ import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.ALREADY_REGISTER
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.CHATBOT_NOT_STARTED;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.EXIT_CHATBOT;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.NOT_REGISTERD;
+import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.PLEASE_WAIT;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_MESSAGE;
 import static sg.nus.edu.iss.finance_telegram_bot.util.Messages.WELCOME_TO_CHATBOT;
 
@@ -86,6 +87,7 @@ public class FinanceTelegramBot extends TelegramLongPollingBot{
                 } 
                 sendTextMessage(chatId, response.getBody());
             } else if (userChatBotState.getOrDefault(chatId, false)){
+                sendTextMessage(chatId, PLEASE_WAIT);
                 // Send chat bot response
                 sendTextMessage(chatId, deepSeekService.getChatResponse(text));
             } else {

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,6 +33,7 @@ import { LoanpaymentslistComponent } from './components/loanpaymentslist/loanpay
 import { registerLicense } from '@syncfusion/ej2-base';
 import { UpdateexpenseComponent } from './components/updateexpense/updateexpense.component';
 import { SignupComponent } from './components/signup/signup.component';
+
 
 registerLicense(syncFusion.licensekey)
 registerLicense(syncFusion.angularLicenseKey)

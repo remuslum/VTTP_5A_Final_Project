@@ -68,4 +68,9 @@ public class Messages {
     """
         You have not started a chatbot session. Start one by typing /startchat.        
     """;
+
+    public static final String PLEASE_WAIT = 
+    """
+        PLease give us a moment, we are retrieving the answer.        
+    """;
 }

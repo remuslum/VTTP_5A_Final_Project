@@ -19,7 +19,7 @@
                 [class.is-invalid]="form.get('interestRate')?.invalid && form.get('interestRate')?.touched">
             </div>
             <div class="mb-3">
-                <label for="payment" class="form-label">Payment</label>
+                <label for="payment" class="form-label">Payment Per Period</label>
                 <input type="number" class="form-control" id="payment" formControlName="payment" 
                 [ngbTooltip]="form.get('payment')?.invalid && form.get('payment')?.touched ? 'Invalid, payment cannot be empty' : ''" 
                 [class.is-invalid]="form.get('payment')?.invalid && form.get('payment')?.touched">

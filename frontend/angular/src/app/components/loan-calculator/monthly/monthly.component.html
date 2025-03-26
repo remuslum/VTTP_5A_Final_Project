@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="duration" class="form-label">Duration</label>
+                <label for="duration" class="form-label">Duration (in years)</label>
                 <input type="number" class="form-control" id="duration" formControlName="duration" 
                 [ngbTooltip]="form.get('duration')?.invalid && form.get('duration')?.touched ? 'Invalid, duration must be greater than 100' : ''" 
                 [class.is-invalid]="form.get('duration')?.invalid && form.get('duration')?.touched">
